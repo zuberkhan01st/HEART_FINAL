@@ -6,17 +6,13 @@ from sklearn.model_selection import train_test_split
 def main():
     st.title('Heart Disease Checkup - Health Genie')
     
-    # Load the heart disease dataset
     data = pd.read_csv('Heart_Disease_Prediction.csv')
 
-    # Separate features (x) and target (y)
     x = data.drop('Heart Disease', axis=1)
     y = data['Heart Disease']
 
-    # Split the data into training and testing sets
     x_train, x_test, y_train, y_test = train_test_split(x, y, test_size=0.2, random_state=0)
 
-    # Function to get user input
     def user_report():
         age = st.slider('Patient Age', 20, 90, 40)
         sex = st.radio('Patient Sex', ['Male', 'Female'])
@@ -54,14 +50,11 @@ def main():
         report_data = pd.DataFrame(user_report, index=[0])
         return report_data
 
-    # Get user input
     user_data = user_report()
 
-    # Train Random Forest classifier
     rf = RandomForestClassifier()
     rf.fit(x_train, y_train)
 
-    # Predict user's heart disease status
     st.subheader('Your Report')
     user_result = rf.predict(user_data)
     if user_result[0] == 'Presence':
